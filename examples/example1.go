@@ -9,7 +9,7 @@ import (
 func main() {
 	// Create new connection to i2c-bus on 1 line with address 0x76.
 	// Use i2cdetect utility to find device address over the i2c-bus
-	i2c, err := i2c.NewI2C(0x76, "localhost:3001")
+	i2c, err := i2c.NewI2C(0x76, 5, "localhost:3001")
 	if err != nil {
 		lg.Fatal(err)
 	}

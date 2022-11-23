@@ -11,16 +11,19 @@ package i2c
 
 import (
 	"encoding/hex"
-	"net"
 
 	lg "github.com/d2r2/go-logger"
+
+	"github.com/traulfs/tsb"
 )
 
 // I2C represents a connection to I2C-device.
 type I2C struct {
-	addr   uint8
-	server string
-	rc     net.Conn //*os.File
+	addr       uint8
+	channel    byte
+	server     tsb.Server
+	server_url string
+	//rc         net.Conn //*os.File
 }
 
 // NewI2C opens a connection for I2C-device.
@@ -28,13 +31,14 @@ type I2C struct {
 // supported as well: you should preliminary specify
 // register address to read from, either write register
 // together with the data in case of write operations.
-func NewI2C(addr uint8, server_url string) (*I2C, error) {
-	con, err := net.Dial("tcp", server_url)
+func NewI2C(addr uint8, channel byte, server_url string) (*I2C, error) {
+	server, err := tsb.NewTcpServer(server_url)
 	if err != nil {
 		return nil, err
 	}
-	/* set slave address here not possible, so do it manually */
-	v := &I2C{rc: con, server: server_url, addr: addr}
+	server.I2cInit(channel)
+	server.I2cSetAdr(channel, addr)
+	v := &I2C{server: server, server_url: server_url, addr: addr, channel: channel}
 	return v, nil
 }
 
@@ -42,7 +46,7 @@ func NewI2C(addr uint8, server_url string) (*I2C, error) {
 
 // GetBus return bus line, where I2C-device is allocated.
 func (v *I2C) GetServer() string {
-	return v.server
+	return v.server_url
 }
 
 // GetAddr return device occupied address in the bus.
@@ -51,7 +55,7 @@ func (v *I2C) GetAddr() uint8 {
 }
 
 func (v *I2C) write(buf []byte) (int, error) {
-	return v.rc.Write(buf)
+	return v.server.I2cWrite(v.channel, buf)
 }
 
 // WriteBytes send bytes to the remote I2C-device. The interpretation of
@@ -62,7 +66,7 @@ func (v *I2C) WriteBytes(buf []byte) (int, error) {
 }
 
 func (v *I2C) read(buf []byte) (int, error) {
-	return v.rc.Read(buf)
+	return v.server.I2cRead(v.channel, buf)
 }
 
 // ReadBytes read bytes from I2C-device.
@@ -78,7 +82,7 @@ func (v *I2C) ReadBytes(buf []byte) (int, error) {
 
 // Close I2C-connection.
 func (v *I2C) Close() error {
-	v.rc.Close()
+	//v.server.Close() NOT IMPLEMENTED YET
 	return nil
 }
 
