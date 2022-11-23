@@ -2,14 +2,16 @@ package logger
 
 import (
 	"fmt"
+	"os"
 )
 
 func Debugf(format string, values ...interface{}) {
-	fmt.Printf(format, values)
+	fmt.Printf(format, values...)
 }
 
 func Fatal(error error) {
 	fmt.Printf("Fatal: %s\n", error)
+	os.Exit(1)
 }
 
 func Notify(message string) {
@@ -17,5 +19,5 @@ func Notify(message string) {
 }
 
 func Infof(format string, values ...interface{}) {
-	fmt.Printf(format, values)
+	fmt.Printf(format, values...)
 }
