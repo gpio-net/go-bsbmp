@@ -27,7 +27,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-
+	lg "github.com/d2r2/go-logger"
 	i2c "github.com/d2r2/go-i2c"
 )
 

@@ -3,16 +3,10 @@ package main
 import (
 	"github.com/d2r2/go-bsbmp"
 	"github.com/d2r2/go-i2c"
-	logger "github.com/d2r2/go-logger"
-)
-
-var lg = logger.NewPackageLogger("main",
-	logger.DebugLevel,
-	// logger.InfoLevel,
+	lg "github.com/d2r2/go-logger"
 )
 
 func main() {
-	defer logger.FinalizeLogger()
 	// Create new connection to i2c-bus on 1 line with address 0x76.
 	// Use i2cdetect utility to find device address over the i2c-bus
 	i2c, err := i2c.NewI2C(0x76, 0)
@@ -25,13 +19,10 @@ func main() {
 	lg.Notify("*** You can change verbosity of output, to modify logging level of modules \"i2c\", \"bsbmp\"")
 	lg.Notify("*** Uncomment/comment corresponding lines with call to ChangePackageLogLevel(...)")
 	lg.Notify("***************************************************************************************************")
-	// Uncomment/comment next lines to suppress/increase verbosity of output
-	logger.ChangePackageLogLevel("i2c", logger.InfoLevel)
-	logger.ChangePackageLogLevel("bsbmp", logger.InfoLevel)
 
 	// sensor, err := bsbmp.NewBMP(bsbmp.BMP180, i2c) // signature=0x55
-	sensor, err := bsbmp.NewBMP(bsbmp.BMP280, i2c) // signature=0x58
-	// sensor, err := bsbmp.NewBMP(bsbmp.BME280, i2c) // signature=0x60
+	// sensor, err := bsbmp.NewBMP(bsbmp.BMP280, i2c) // signature=0x58
+	sensor, err := bsbmp.NewBMP(bsbmp.BME280, i2c) // signature=0x60
 	// sensor, err := bsbmp.NewBMP(bsbmp.BMP388, i2c) // signature=0x50
 	if err != nil {
 		lg.Fatal(err)
