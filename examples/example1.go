@@ -16,9 +16,6 @@ func main() {
 	defer i2c.Close()
 
 	lg.Notify("***************************************************************************************************")
-	lg.Notify("*** You can change verbosity of output, to modify logging level of modules \"i2c\", \"bsbmp\"")
-	lg.Notify("*** Uncomment/comment corresponding lines with call to ChangePackageLogLevel(...)")
-	lg.Notify("***************************************************************************************************")
 
 	// sensor, err := bsbmp.NewBMP(bsbmp.BMP180, i2c) // signature=0x55
 	// sensor, err := bsbmp.NewBMP(bsbmp.BMP280, i2c) // signature=0x58

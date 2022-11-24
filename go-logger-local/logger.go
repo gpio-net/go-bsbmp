@@ -6,18 +6,18 @@ import (
 )
 
 func Debugf(format string, values ...interface{}) {
-	fmt.Printf(format, values...)
+	fmt.Printf("Debug: "+format+"\r\n", values...)
 }
 
 func Fatal(error error) {
-	fmt.Printf("Fatal: %s\n", error)
+	fmt.Printf("Fatal: %s\r\n", error)
 	os.Exit(1)
 }
 
 func Notify(message string) {
-	fmt.Printf("Notify: %s\n", message)
+	fmt.Printf("Notify: %s\r\n", message)
 }
 
 func Infof(format string, values ...interface{}) {
-	fmt.Printf(format, values...)
+	fmt.Printf("Info: "+format+"\r\n", values...)
 }
